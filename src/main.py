@@ -60,6 +60,24 @@ def spawn_monsters():
         y = random.randint(100, HEIGHT - 100)
         monsters.append(Monster(x, y))
 
+def game_over():
+    font = pygame.font.SysFont('Arial', 72)
+    text = font.render("Game Over!", True, (255, 0, 0))
+    screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
+    pygame.display.update()
+    pygame.time.wait(3000)  # Ожидаем 3 секунды перед выходом
+    pygame.quit()
+    exit()
+
+def victory():
+    font = pygame.font.SysFont('Arial', 72)
+    text = font.render("You Win!", True, (0, 255, 0))
+    screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
+    pygame.display.update()
+    pygame.time.wait(3000)  # Ожидаем 3 секунды перед выходом
+    pygame.quit()
+    exit()
+
 # Основной игровой цикл
 def main():
     run_game = True
@@ -126,24 +144,6 @@ def main():
         clock.tick(FPS)
 
     pygame.quit()
-
-def game_over():
-    font = pygame.font.SysFont('Arial', 72)
-    text = font.render("Game Over!", True, (255, 0, 0))
-    screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
-    pygame.display.update()
-    pygame.time.wait(3000)  # Ожидаем 3 секунды перед выходом
-    pygame.quit()
-    exit()
-
-def victory():
-    font = pygame.font.SysFont('Arial', 72)
-    text = font.render("You Win!", True, (0, 255, 0))
-    screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
-    pygame.display.update()
-    pygame.time.wait(3000)  # Ожидаем 3 секунды перед выходом
-    pygame.quit()
-    exit()
 
 if __name__ == '__main__':
     main()
