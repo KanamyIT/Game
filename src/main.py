@@ -7,6 +7,7 @@ from src.raycaster import Raycaster
 from src.player import Player
 from src.monster import Monster
 from src.farm_manager import FarmManager
+from src.painting import Painting
 
 # Константы и начальная настройка
 WIDTH, HEIGHT = 800, 600
@@ -25,17 +26,14 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Farm Horror Game")
 clock = pygame.time.Clock()
 
-# Звуки
-footsteps_sound = pygame.mixer.Sound('assets/sounds/footsteps.wav')  # Замените на свой звук шагов
-shotgun_sound = pygame.mixer.Sound('assets/sounds/shotgun.wav')  # Замените на свой звук выстрела
-monster_sound = pygame.mixer.Sound('assets/sounds/monster_sound.wav')  # Замените на свой звук монстра
-chicken_sound = pygame.mixer.Sound('assets/sounds/chicken_sound.wav')  # Замените на звук курицы
-
 # Игрок
 player = Player()
 
 # Менеджер игры (день/ночь, задачи)
 farm_manager = FarmManager()
+
+# Картины
+paintings = [Painting(100, 100), Painting(300, 100), Painting(500, 100)]
 
 # Raycasting
 raycaster = Raycaster(player, MAP)
@@ -62,6 +60,11 @@ def main():
         overlay_surface = pygame.Surface((WIDTH, HEIGHT))
         overlay_surface.fill(overlay_color)
         screen.blit(overlay_surface, (0, 0))
+
+        # Обновление картин
+        for painting in paintings:
+            painting.update(farm_manager.time_of_day)
+            painting.draw(screen)
 
         # Отображение raycasting
         raycaster.cast()
