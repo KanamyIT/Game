@@ -1,7 +1,6 @@
 import pygame
 import math
 import random
-import time
 from pygame.locals import *
 from src.raycaster import Raycaster
 from src.player import Player
@@ -38,6 +37,25 @@ paintings = [Painting(100, 100), Painting(300, 100), Painting(500, 100)]
 # Raycasting
 raycaster = Raycaster(player, MAP)
 
+# Список монстров
+monsters = []
+
+# Звуки
+footsteps_sound = pygame.mixer.Sound('assets/sounds/footsteps.wav')  # Замените на свой звук шагов
+shotgun_sound = pygame.mixer.Sound('assets/sounds/shotgun.wav')  # Замените на свой звук выстрела
+monster_sound = pygame.mixer.Sound('assets/sounds/monster_sound.wav')  # Замените на свой звук монстра
+chicken_sound = pygame.mixer.Sound('assets/sounds/chicken_sound.wav')  # Замените на звук курицы
+
+def spawn_monsters():
+    """Спавн монстров ночью"""
+    global monsters
+    monsters = []
+    num_monsters = random.randint(3, 10)  # Число монстров каждую ночь
+    for _ in range(num_monsters):
+        x = random.randint(100, WIDTH - 100)
+        y = random.randint(100, HEIGHT - 100)
+        monsters.append(Monster(x, y))
+
 # Основной игровой цикл
 def main():
     run_game = True
@@ -55,16 +73,19 @@ def main():
         # Обновление времени (день/ночь)
         farm_manager.update(clock.get_time() / 1000)
 
-        # Получение оверлея для дня/ночи
-        overlay_color = farm_manager.get_overlay_color()
-        overlay_surface = pygame.Surface((WIDTH, HEIGHT))
-        overlay_surface.fill(overlay_color)
-        screen.blit(overlay_surface, (0, 0))
+        # Спавним монстров на ночь
+        if farm_manager.time_of_day == 1:
+            spawn_monsters()
 
         # Обновление картин
         for painting in paintings:
             painting.update(farm_manager.time_of_day)
             painting.draw(screen)
+
+        # Обновление монстров
+        for monster in monsters:
+            monster.update(player.x, player.y)
+            monster.draw(screen)
 
         # Отображение raycasting
         raycaster.cast()
