@@ -4,8 +4,8 @@ import random
 import sys
 import os
 
-# Добавляем путь к папке src
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+# Добавляем путь к папке src (на один уровень выше)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
 
 from src.raycaster import Raycaster
 from src.player import Player
