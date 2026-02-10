@@ -29,8 +29,17 @@ class FarmManager:
             return (0, 0, 0, 200)  # Dark with red
 
     def draw_ui(self, screen):
-        """Отображаем время суток и прогресс ночей"""
+        """Отображаем время суток, здоровье и патроны"""
         font = pygame.font.SysFont('Arial', 24)
         time_text = "Night Progress: {}/{}".format(self.timer // 60, self.night_duration // 60)
-        text_surface = font.render(time_text, True, (255, 255, 255))
-        screen.blit(text_surface, (10, 10))  # Отображение текста на экране
+        ammo_text = "Ammo: {}/6".format(player.shotgun_ammo)
+        health_text = "Health: {}".format(player.health)
+
+        # Отображение текста на экране
+        time_surface = font.render(time_text, True, (255, 255, 255))
+        ammo_surface = font.render(ammo_text, True, (255, 255, 255))
+        health_surface = font.render(health_text, True, (255, 255, 255))
+
+        screen.blit(time_surface, (10, 10))  # Время суток
+        screen.blit(ammo_surface, (10, 40))  # Патроны
+        screen.blit(health_surface, (10, 70))  # Здоровье
