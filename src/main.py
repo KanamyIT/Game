@@ -1,7 +1,12 @@
 import pygame
 import math
 import random
-from pygame.locals import *
+import sys
+import os
+
+# Добавляем путь к папке src
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
+
 from src.raycaster import Raycaster
 from src.player import Player
 from src.monster import Monster
