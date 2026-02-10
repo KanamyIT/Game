@@ -1,6 +1,5 @@
 import pygame
 import math
-
 class Player:
     def __init__(self):
         self.x, self.y = WIDTH // 2, HEIGHT // 2
@@ -45,3 +44,12 @@ class Player:
             self.shotgun_ammo = 6  # Восстанавливаем патроны
             self.reloading = False
             pygame.time.set_timer(pygame.USEREVENT, 0)  # Останавливаем таймер
+
+    def check_collisions(self, monsters):
+        """Проверка столкновений с монстрами"""
+        for monster in monsters:
+            if math.hypot(monster.x - self.x, monster.y - self.y) < 32:  # Радиус столкновения
+                self.health -= 1  # Уменьшаем здоровье игрока
+                if self.health <= 0:
+                    print("Game Over!")  # Конец игры
+                    pygame.quit()
