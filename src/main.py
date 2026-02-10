@@ -44,6 +44,7 @@ monsters = []
 # Звуки
 footsteps_sound = pygame.mixer.Sound('assets/sounds/footsteps.wav')  # Замените на свой звук шагов
 shotgun_sound = pygame.mixer.Sound('assets/sounds/shotgun.wav')  # Замените на свой звук выстрела
+pistol_sound = pygame.mixer.Sound('assets/sounds/pistol.wav')  # Звук пистолета
 monster_sound = pygame.mixer.Sound('assets/sounds/monster_sound.wav')  # Замените на свой звук монстра
 chicken_sound = pygame.mixer.Sound('assets/sounds/chicken_sound.wav')  # Замените на звук курицы
 
@@ -51,14 +52,15 @@ chicken_sound = pygame.mixer.Sound('assets/sounds/chicken_sound.wav')  # Зам�
 door = Door(400, 300)
 
 def spawn_monsters():
-    """Спавн монстров ночью"""
+    """Спавн монстров ночью с разными типами"""
     global monsters
     monsters = []
     num_monsters = random.randint(3, 10)  # Число монстров каждую ночь
     for _ in range(num_monsters):
+        monster_type = random.choice(['shadow', 'cultist', 'boss'])  # Случайный тип монстра
         x = random.randint(100, WIDTH - 100)
         y = random.randint(100, HEIGHT - 100)
-        monsters.append(Monster(x, y))
+        monsters.append(Monster(x, y, monster_type))
 
 def game_over():
     font = pygame.font.SysFont('Arial', 72)
@@ -89,6 +91,10 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:  # Перезарядка
                     player.reload()
+                if event.key == pygame.K_1:  # Выбор дробовика
+                    player.current_weapon = 'shotgun'
+                if event.key == pygame.K_2:  # Выбор пистолета
+                    player.current_weapon = 'pistol'
 
         # Проверка столкновений с монстрами
         player.check_collisions(monsters)
