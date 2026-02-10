@@ -7,7 +7,9 @@ class Player:
         self.rotation = 0
         self.health = 100  # Здоровье игрока
         self.shotgun_ammo = 6  # Патроны дробовика
+        self.pistol_ammo = 12  # Патроны пистолета
         self.reloading = False
+        self.current_weapon = 'shotgun'  # Изначально дробовик
 
     def move(self, keys):
         speed = PLAYER_SPEED
@@ -28,11 +30,18 @@ class Player:
         self.rotation = math.degrees(math.atan2(mouse_pos[1] - self.y, mouse_pos[0] - self.x))
 
     def shoot(self):
-        if self.shotgun_ammo > 0 and not self.reloading:
-            self.shotgun_ammo -= 1
-            shotgun_sound.play()  # Звук выстрела
-            # Логика стрельбы (попадание по монстру)
-            return True
+        if self.current_weapon == 'shotgun':
+            if self.shotgun_ammo > 0 and not self.reloading:
+                self.shotgun_ammo -= 1
+                shotgun_sound.play()  # Звук выстрела
+                # Логика стрельбы (попадание по монстру)
+                return True
+        elif self.current_weapon == 'pistol':
+            if self.pistol_ammo > 0 and not self.reloading:
+                self.pistol_ammo -= 1
+                pistol_sound.play()  # Звук выстрела пистолета
+                # Логика стрельбы (попадание по монстру)
+                return True
         return False
 
     def reload(self):
@@ -42,7 +51,10 @@ class Player:
 
     def update(self):
         if self.reloading:
-            self.shotgun_ammo = 6  # Восстанавливаем патроны
+            if self.current_weapon == 'shotgun':
+                self.shotgun_ammo = 6
+            elif self.current_weapon == 'pistol':
+                self.pistol_ammo = 12
             self.reloading = False
             pygame.time.set_timer(pygame.USEREVENT, 0)  # Останавливаем таймер
 
