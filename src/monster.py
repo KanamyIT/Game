@@ -1,3 +1,7 @@
+import pygame
+import random
+import math
+
 class Monster:
     def __init__(self, x, y, monster_type='shadow'):
         self.x = x
