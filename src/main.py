@@ -7,6 +7,7 @@ from src.player import Player
 from src.monster import Monster
 from src.farm_manager import FarmManager
 from src.painting import Painting
+from src.door import Door
 
 # Константы и начальная настройка
 WIDTH, HEIGHT = 800, 600
@@ -46,6 +47,9 @@ shotgun_sound = pygame.mixer.Sound('assets/sounds/shotgun.wav')  # Замени�
 monster_sound = pygame.mixer.Sound('assets/sounds/monster_sound.wav')  # Замените на свой звук монстра
 chicken_sound = pygame.mixer.Sound('assets/sounds/chicken_sound.wav')  # Замените на звук курицы
 
+# Дверь
+door = Door(400, 300)
+
 def spawn_monsters():
     """Спавн монстров ночью"""
     global monsters
@@ -64,11 +68,18 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run_game = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:  # Перезарядка
+                    player.reload()
 
         # Управление движением игрока
         keys = pygame.key.get_pressed()
         player.move(keys)
         player.rotate(pygame.mouse.get_pos())
+
+        # Ремонт двери
+        if keys[pygame.K_e]:  # При нажатии E ремонтируем дверь
+            door.repair(20)
 
         # Обновление времени (день/ночь)
         farm_manager.update(clock.get_time() / 1000)
@@ -86,6 +97,13 @@ def main():
         for monster in monsters:
             monster.update(player.x, player.y)
             monster.draw(screen)
+
+        # Стрельба
+        if keys[pygame.K_SPACE]:  # Если игрок нажимает пробел, стреляем
+            player.shoot()
+
+        # Рисуем дверь
+        door.draw(screen)
 
         # Отображение raycasting
         raycaster.cast()
