@@ -26,9 +26,9 @@ class Monster:
             self.kill()
 
     def kill(self):
-        # Логика убийства монстра
+        """Монстр убит"""
         monster_sound.play()  # Звук уничтожения монстра
-        monsters.remove(self)  # Удалить монстра из списка
+        monsters.remove(self)  # Удаляем монстра из списка
 
     def draw(self, screen):
         screen.blit(self.image, (self.x, self.y))
