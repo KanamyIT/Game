@@ -1,6 +1,3 @@
-import pygame
-import random
-
 class Monster:
     def __init__(self, x, y, monster_type='shadow'):
         self.x = x
@@ -23,6 +20,15 @@ class Monster:
     def update(self, player_x, player_y):
         self.move_towards_player(player_x, player_y)
 
+    def take_damage(self, damage):
+        self.hp -= damage
+        if self.hp <= 0:
+            self.kill()
+
+    def kill(self):
+        # Логика убийства монстра
+        monster_sound.play()  # Звук уничтожения монстра
+        monsters.remove(self)  # Удалить монстра из списка
+
     def draw(self, screen):
         screen.blit(self.image, (self.x, self.y))
-
