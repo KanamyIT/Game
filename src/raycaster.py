@@ -1,4 +1,5 @@
 import math
+import pygame
 
 class Raycaster:
     def __init__(self, player, map_data):
