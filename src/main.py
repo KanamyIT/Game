@@ -72,6 +72,17 @@ def main():
                 if event.key == pygame.K_r:  # Перезарядка
                     player.reload()
 
+        # Проверка столкновений с монстрами
+        player.check_collisions(monsters)
+
+        # Проверка победы
+        if len(monsters) == 0 and farm_manager.time_of_day == 1:
+            victory()
+
+        # Проверка здоровья игрока
+        if player.health <= 0:
+            game_over()
+
         # Управление движением игрока
         keys = pygame.key.get_pressed()
         player.move(keys)
@@ -115,6 +126,24 @@ def main():
         clock.tick(FPS)
 
     pygame.quit()
+
+def game_over():
+    font = pygame.font.SysFont('Arial', 72)
+    text = font.render("Game Over!", True, (255, 0, 0))
+    screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
+    pygame.display.update()
+    pygame.time.wait(3000)  # Ожидаем 3 секунды перед выходом
+    pygame.quit()
+    exit()
+
+def victory():
+    font = pygame.font.SysFont('Arial', 72)
+    text = font.render("You Win!", True, (0, 255, 0))
+    screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
+    pygame.display.update()
+    pygame.time.wait(3000)  # Ожидаем 3 секунды перед выходом
+    pygame.quit()
+    exit()
 
 if __name__ == '__main__':
     main()
